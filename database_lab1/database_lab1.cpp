@@ -5,6 +5,8 @@
 #include <string>
 using namespace std;
 
+void menu();
+
 class course_node
 {
     private:
@@ -19,10 +21,19 @@ class course_node
 
 int main()
 {
+    char choise = ' ';
+    while (choise != '0')
+    {
+        menu();
+        cin >> choise;
+    }
+}
+
+/* 
     std::cout << "Hello World!\n";
     course_node HEAD("kalle");
     HEAD.print();
-}
+*/
 
 course_node::~course_node()
 {
@@ -43,4 +54,12 @@ void course_node::print()
 {
     cout << this->student_name << endl;
 }
-;
+
+
+void menu()
+{
+    cout << "1. Apply to course." << endl;
+    cout << "2. Withdraw from course." << endl;
+    cout << "0. Exit." << endl;
+    cout << "Enter choise: ";
+}
