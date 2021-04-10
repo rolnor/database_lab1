@@ -14,8 +14,9 @@ class course_object_stack
         string name;
     public:
         course_object_stack* push(string name);
-        void pop();
         void print();
+        course_object_stack* getNext();
+        void setNext();
         course_object_stack(string name, course_object_stack* next_node);
         ~course_object_stack();
 };
@@ -32,7 +33,9 @@ class course_node
         ~course_node();
         course_node(course_node* nextnode);
         course_node(string input_name);
+        course_object_stack* pop();
         string getCourseName();
+        course_node* getNext();
         void addStudent(string name);
         void print();
 };
@@ -45,6 +48,8 @@ int main()
     course_node* main_node = nullptr;
     course_node* course_traverser = nullptr;
     string inputString = "";
+
+    course_object_stack* poppedItem = nullptr;
 
     while (choise != '0')
     {
@@ -73,14 +78,23 @@ int main()
                         course_traverser->addStudent(inputString);
                         course_traverser = nullptr;
                     }
+                    else
+                    {
+                        course_traverser = course_traverser->getNext();
+                    }
+                    
                 }
                 break;
             case '3':
+                // todo switch main node and fix nullptr pop crash
+                poppedItem = main_node->pop();
+                delete poppedItem;
                 break;
             case '4':
                 if (main_node != nullptr)
                 {
                     main_node->print();
+                    cout << endl << endl;
                 }
                 break;
             default:
@@ -108,9 +122,20 @@ course_node::course_node(string input_name)
     next_course = nullptr;
     course_name = input_name;
 }
+course_object_stack* course_node::pop()
+{
+    course_object_stack* poppedItem = this->students;
+    this->students = poppedItem->getNext();
+    poppedItem->setNext();
+    return poppedItem;
+}
 string course_node::getCourseName()
 {
     return this->course_name;
+}
+course_node* course_node::getNext()
+{
+    return this->next_course;
 }
 void course_node::addStudent(string name)
 {
@@ -118,7 +143,7 @@ void course_node::addStudent(string name)
 }
 void course_node::print()
 {
-    cout << this->course_name << endl;
+    cout << this->course_name << ": ";
     this->students->print();
 }
 
@@ -139,18 +164,25 @@ course_object_stack* course_object_stack::push(string name)
     return new_student;
 }
 
-void course_object_stack::pop()
-{
-}
 
 void course_object_stack::print()
 {
     course_object_stack* traverser = this;
     while(traverser != nullptr)
     {
-        cout << traverser->name << endl;
+        cout << traverser->name << " ";
         traverser = traverser->next;
     }
+}
+
+course_object_stack* course_object_stack::getNext()
+{
+    return this->next;
+}
+
+void course_object_stack::setNext()
+{
+    this->next = nullptr;
 }
 
 course_object_stack::course_object_stack(string name, course_object_stack* next_node )
