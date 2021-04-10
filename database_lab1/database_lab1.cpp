@@ -13,7 +13,7 @@ class course_object_stack
         course_object_stack* next;
         string name;
     public:
-        void push(string name);
+        course_object_stack* push(string name);
         void pop();
         void print();
         course_object_stack(string name, course_object_stack* next_node);
@@ -33,6 +33,7 @@ class course_node
         course_node(course_node* nextnode);
         course_node(string input_name);
         string getCourseName();
+        void addStudent(string name);
         void print();
 };
 
@@ -69,7 +70,7 @@ int main()
                     {
                         cout << "Course found. Enter name: ";
                         cin >> inputString;
-                        //push here
+                        course_traverser->addStudent(inputString);
                         course_traverser = nullptr;
                     }
                 }
@@ -98,7 +99,7 @@ course_node::~course_node()
 course_node::course_node(course_node* nextnode)
 {
     next_course = nextnode;  
-    students = new course_object_stack();
+    students = nullptr;
     search_students = nullptr;
 };
 
@@ -111,9 +112,14 @@ string course_node::getCourseName()
 {
     return this->course_name;
 }
+void course_node::addStudent(string name)
+{
+    this->students = this->students->push(name);
+}
 void course_node::print()
 {
     cout << this->course_name << endl;
+    this->students->print();
 }
 
 
@@ -127,10 +133,10 @@ void menu()
     cout << "Enter choise: ";
 }
 
-void course_object_stack::push(string name)
+course_object_stack* course_object_stack::push(string name)
 {
-    course_object_stack* students = new course_object_stack(name);
-
+    course_object_stack* new_student = new course_object_stack(name, this);
+    return new_student;
 }
 
 void course_object_stack::pop()
