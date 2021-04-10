@@ -9,8 +9,16 @@ void menu();
 
 class course_object_stack
 {
-
+    private:
+        course_object_stack* next;
+        string name;
+    public:
+        void push(string name);
+        void pop();
+        course_object_stack();
+        ~course_object_stack();
 };
+
 
 class course_node
 {
@@ -30,36 +38,49 @@ class course_node
 int main()
 {
     char choise = ' ';
+    course_node* main_node = nullptr;
+
     while (choise != '0')
     {
+        string input_name = "";
         menu();
         cin >> choise;
         switch (choise)
         {
             case '1':
+                if (main_node == nullptr)
+                {
+                    cin >> input_name;
+                    main_node = new course_node(input_name);
+                }
                 break;
             case '2':
+                break;
+            case '3':
+                break;
+            case '4':
+                if (main_node != nullptr)
+                {
+
+                    main_node->print();
+                }
                 break;
             default:
                 break;
         }
     }
+    delete main_node;
 }
-
-/* 
-    std::cout << "Hello World!\n";
-    course_node HEAD("kalle");
-    HEAD.print();
-*/
 
 course_node::~course_node()
 {
-   // delete student_name;
+    delete this->active_course;
 }
 
 course_node::course_node(course_node* nextnode)
 {
     next_course = nextnode;  
+    active_course = new course_object_stack();
 };
 
 course_node::course_node(string input_name)
@@ -81,4 +102,23 @@ void menu()
     cout << "4. Print the contents of the database in the following form:" << endl;
     cout << "0. Exit." << endl;
     cout << "Enter choise: ";
+}
+
+void course_object_stack::push(string name)
+{
+}
+
+void course_object_stack::pop()
+{
+}
+
+course_object_stack::course_object_stack()
+{
+    this->next = nullptr;
+}
+
+course_object_stack::~course_object_stack()
+{
+    if (this->next != nullptr)
+        delete this->next;
 }
