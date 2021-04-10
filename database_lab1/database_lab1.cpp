@@ -1,6 +1,3 @@
-// database_lab1.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
 #include <string>
 using namespace std;
@@ -16,11 +13,11 @@ class course_object_stack
         course_object_stack* push(string name);
         void print();
         course_object_stack* getNext();
+        string getName();
         void setNext();
         course_object_stack(string name, course_object_stack* next_node);
         ~course_object_stack();
 };
-
 
 class course_node
 {
@@ -37,10 +34,9 @@ class course_node
         string getCourseName();
         course_node* getNext();
         void addStudent(string name);
+        void addSearchStudent(string name);
         void print();
 };
-
-
 
 int main()
 {
@@ -87,8 +83,40 @@ int main()
                 break;
             case '3':
                 // todo switch main node and fix nullptr pop crash
-                poppedItem = main_node->pop();
-                delete poppedItem;
+        
+                cout << "Enter course name: ";
+                cin >> inputString;
+                course_traverser = main_node;
+                while (course_traverser != nullptr)
+                {
+                    if (course_traverser->getCourseName() == inputString)
+                    {
+                        
+                        cout << "Course found. Enter name: ";
+                        cin >> inputString;
+                        poppedItem = main_node->pop();
+                        while (poppedItem != nullptr)
+                        {                          
+                            if (poppedItem->getName() == inputString)
+                            {
+                                delete poppedItem;
+                                // add searchqueue to studentqueue
+                                break;
+                            }
+                            else
+                            {
+                                course_traverser->addSearchStudent(poppedItem->getName());
+                                delete poppedItem;
+                            }
+                            poppedItem = main_node->pop();
+                        }
+                        course_traverser = nullptr;
+                    }
+                    else
+                    {
+                        course_traverser = course_traverser->getNext();
+                    }
+                }
                 break;
             case '4':
                 if (main_node != nullptr)
@@ -122,6 +150,7 @@ course_node::course_node(string input_name)
     next_course = nullptr;
     course_name = input_name;
 }
+
 course_object_stack* course_node::pop()
 {
     course_object_stack* poppedItem = this->students;
@@ -129,24 +158,32 @@ course_object_stack* course_node::pop()
     poppedItem->setNext();
     return poppedItem;
 }
+
 string course_node::getCourseName()
 {
     return this->course_name;
 }
+
 course_node* course_node::getNext()
 {
     return this->next_course;
 }
+
 void course_node::addStudent(string name)
 {
     this->students = this->students->push(name);
 }
+
+void course_node::addSearchStudent(string name)
+{
+    this->search_students = this->students->push(name);
+}
+
 void course_node::print()
 {
     cout << this->course_name << ": ";
     this->students->print();
 }
-
 
 void menu()
 {
@@ -164,7 +201,6 @@ course_object_stack* course_object_stack::push(string name)
     return new_student;
 }
 
-
 void course_object_stack::print()
 {
     course_object_stack* traverser = this;
@@ -178,6 +214,11 @@ void course_object_stack::print()
 course_object_stack* course_object_stack::getNext()
 {
     return this->next;
+}
+
+string course_object_stack::getName()
+{
+    return this->name;
 }
 
 void course_object_stack::setNext()
