@@ -6,38 +6,36 @@ void menu();
 
 class course_object_stack
 {
-    private:
-        course_object_stack* next;
-        string name;
-    public:
-        course_object_stack* push(string name);
-        void print();
-        course_object_stack* getNext();        
-        course_object_stack& pop(course_object_stack& students);
-        string getName();
-        void setNext();
-        course_object_stack(string name, course_object_stack* next_node);
-        ~course_object_stack();
+private:
+    course_object_stack* next;
+    string name;
+public:
+    course_object_stack* push(string name);
+    void print();
+    course_object_stack* getNext();
+    string getName();
+    void setNext();
+    course_object_stack(string name, course_object_stack* next_node);
+    ~course_object_stack();
 };
 
 class course_node
 {
-    private:
-        course_node* next_course;
-        string course_name;
-        course_object_stack* students;
-        course_object_stack* search_students;
-    public:
-        ~course_node();
-        course_node(course_node* nextnode);
-        course_node(string input_name);
-
-        string getCourseName();
-        course_node* getNext();
-        void addStudent(string name);
-        course_object_stack& popStudent();
-        void addSearchStudent(string name);
-        void print();
+private:
+    course_node* next_course;
+    string course_name;
+    course_object_stack* students;
+    course_object_stack* search_students;
+public:
+    ~course_node();
+    course_node(course_node* nextnode);
+    course_node(string input_name);
+    course_object_stack* pop();
+    string getCourseName();
+    course_node* getNext();
+    void addStudent(string name);
+    void addSearchStudent(string name);
+    void print();
 };
 
 int main()
@@ -56,79 +54,77 @@ int main()
         cin >> choise;
         switch (choise)
         {
-            case '1':
-                if (main_node == nullptr)
+        case '1':
+            if (main_node == nullptr)
+            {
+                cin >> input_name;
+                main_node = new course_node(input_name);
+            }
+            break;
+        case '2':
+            cout << "Enter course name: ";
+            cin >> inputString;
+            course_traverser = main_node;
+            while (course_traverser != nullptr)
+            {
+                if (course_traverser->getCourseName() == inputString)
                 {
-                    cin >> input_name;
-                    main_node = new course_node(input_name);
+                    cout << "Course found. Enter name: ";
+                    cin >> inputString;
+                    course_traverser->addStudent(inputString);
+                    course_traverser = nullptr;
                 }
-                break;
-            case '2':
-                cout << "Enter course name: ";
-                cin >> inputString;
-                course_traverser = main_node;
-                while (course_traverser != nullptr)
+                else
                 {
-                    if (course_traverser->getCourseName() == inputString)
-                    {
-                        cout << "Course found. Enter name: ";
-                        cin >> inputString;
-                        course_traverser->addStudent(inputString);
-                        course_traverser = nullptr;
-                    }
-                    else
-                    {
-                        course_traverser = course_traverser->getNext();
-                    }
-                    
+                    course_traverser = course_traverser->getNext();
                 }
-                break;
-            case '3':
-                // todo switch main node and fix nullptr pop crash
-        
-                cout << "Enter course name: ";
-                cin >> inputString;
-                course_traverser = main_node;
-                while (course_traverser != nullptr)
+
+            }
+            break;
+        case '3':
+            cout << "Enter course name: ";
+            cin >> inputString;
+            course_traverser = main_node;
+            while (course_traverser != nullptr)
+            {
+                if (course_traverser->getCourseName() == inputString)
                 {
-                    if (course_traverser->getCourseName() == inputString)
+
+                    cout << "Course found. Enter name: ";
+                    cin >> inputString;
+                    poppedItem = main_node->pop();
+                    while (poppedItem != nullptr)
                     {
-                        
-                        cout << "Course found. Enter name: ";
-                        cin >> inputString;
-                        poppedItem = &main_node->popStudent();
-                        while (poppedItem != NULL)
-                        {                          
-                            if (poppedItem->getName() == inputString)
-                            {
-                                delete poppedItem;
-                                // add searchqueue to studentqueue
-                                break;
-                            }
-                            else
-                            {
-                                course_traverser->addSearchStudent(poppedItem->getName());
-                                delete poppedItem;
-                            }
-                            *poppedItem = main_node->popStudent();
+                        if (poppedItem->getName() == inputString)
+                        {
+                            delete poppedItem;
+                            // add searchqueue to studentqueue
+                            break;
                         }
-                        course_traverser = nullptr;
+                        else
+                        {
+                            course_traverser->addSearchStudent(poppedItem->getName());
+                            delete poppedItem;
+                        }
+                        poppedItem = main_node->pop();
                     }
-                    else
-                    {
-                        course_traverser = course_traverser->getNext();
-                    }
+                    course_traverser = nullptr;
                 }
-                break;
-            case '4':
-                if (main_node != nullptr)
+                else
                 {
-                    main_node->print();
-                    cout << endl << endl;
+                    course_traverser = course_traverser->getNext();
                 }
-                break;
-            default:
-                break;
+            }
+            break;
+        case '4':
+            if (main_node != nullptr)
+            {
+                main_node->print();
+                cout << endl << endl;
+            }
+            break;
+        default:
+            break;
         }
     }
     delete main_node;
@@ -142,7 +138,7 @@ course_node::~course_node()
 
 course_node::course_node(course_node* nextnode)
 {
-    next_course = nextnode;  
+    next_course = nextnode;
     students = nullptr;
     search_students = nullptr;
 };
@@ -151,6 +147,14 @@ course_node::course_node(string input_name)
 {
     next_course = nullptr;
     course_name = input_name;
+}
+
+course_object_stack* course_node::pop()
+{
+    course_object_stack* poppedItem = this->students;
+    this->students = poppedItem->getNext();
+    poppedItem->setNext();
+    return poppedItem;
 }
 
 string course_node::getCourseName()
@@ -168,33 +172,18 @@ void course_node::addStudent(string name)
     this->students = this->students->push(name);
 }
 
-course_object_stack& course_object_stack::pop(course_object_stack& students)
-{
-    course_object_stack* poppedItem = &students;
-    course_object_stack* nextItem = poppedItem->getNext();
-    if (nextItem == nullptr)
-    {
-        poppedItem = new course_object_stack(students.getName(), nullptr);
-        students.name = "";
-        students.setNext();
-    }
-    else
-    {
-        poppedItem->setNext();
-        //sad
-    }
-    return *poppedItem;
-}
-
-course_object_stack& course_node::popStudent()
-{
-    course_object_stack* test = &students->pop(*this->students);
-    return *test;
-}
-
 void course_node::addSearchStudent(string name)
 {
-    this->search_students = this->students->push(name);
+    course_object_stack* saveStudent = new course_object_stack(name, nullptr);
+
+    if (this->search_students != nullptr)
+    {
+
+    }
+    else {
+        this->search_students = this->students->push(name);
+    }
+
 }
 
 void course_node::print()
@@ -222,7 +211,7 @@ course_object_stack* course_object_stack::push(string name)
 void course_object_stack::print()
 {
     course_object_stack* traverser = this;
-    while(traverser != NULL)
+    while (traverser != nullptr)
     {
         cout << traverser->name << " ";
         traverser = traverser->next;
@@ -244,7 +233,7 @@ void course_object_stack::setNext()
     this->next = nullptr;
 }
 
-course_object_stack::course_object_stack(string name, course_object_stack* next_node )
+course_object_stack::course_object_stack(string name, course_object_stack* next_node)
 {
     this->name = name;
     this->next = next_node;
