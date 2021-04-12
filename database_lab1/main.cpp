@@ -1,17 +1,16 @@
-#include <iostream>
-#include <string>
-#include <stack>
-using namespace std;
+#include "mystack.h"
+#include "myTimer.h"
 
 void menu();
+
 
 class course_node
 {
 private:
     course_node* next_course;
     string course_name;
-    stack <string> students;
-    stack <string> temp_queue_students;
+    myStack students;
+    myStack temp_queue_students;
 public:
     ~course_node();
     course_node(course_node* nextnode);
@@ -21,6 +20,7 @@ public:
     void addStudent(string name);
     void removeStudent(string name);
     void print();
+    myTimer myTimer;
 };
 
 int main()
@@ -32,6 +32,8 @@ int main()
 
     while (choise != '0')
     {
+        
+
         string input_name = "";
         menu();
         cin >> choise;
@@ -133,6 +135,8 @@ void course_node::addStudent(string name)
 
 void course_node::removeStudent(string name)
 {
+    auto i_start = std::chrono::system_clock::now();
+
     while (!this->students.empty())
     {
         if (this->students.top() == name)
@@ -152,10 +156,14 @@ void course_node::removeStudent(string name)
         this->students.push(this->temp_queue_students.top());
         this->temp_queue_students.pop();
     }
+    auto i_end = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed = i_end - i_start;
+    std::cout << "remove : " << elapsed.count() << "s";
 }
 
 void course_node::print()
 {
+    myTimer.start();
     cout << this->course_name << ": ";
     while (!this->students.empty())
     {
@@ -168,6 +176,7 @@ void course_node::print()
         this->students.push(this->temp_queue_students.top());
         this->temp_queue_students.pop();
     }
+    myTimer.stop("Print");
 }
 
 void menu()
