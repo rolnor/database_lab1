@@ -17,6 +17,8 @@ public:
     course_node(string input_name);
     string getCourseName();
     course_node* getNext();
+    void addNode(string inputString, string nameString);
+    void setNodeName(string inputString);
     void addStudent(string name);
     void removeStudent(string name);
     void print();
@@ -40,13 +42,11 @@ int main()
         switch (choise)
         {
         case '1':
-            
+            myTimer.start();
             if (main_node == nullptr)
             {
-                cout << "Enter db name: ";
-                cin >> input_name;
-                myTimer.start();
-                main_node = new course_node(input_name);
+                main_node = new course_node("");
+                cout << "Empty Db Created" << endl;
             }
             myTimer.stop("Create db: ");
             break;
@@ -59,14 +59,23 @@ int main()
             course_traverser = main_node;
             while (course_traverser != nullptr)
             {
-                if (course_traverser->getCourseName() == inputString)
+                if (course_traverser->getCourseName() == inputString || course_traverser->getCourseName() == "")
                 {
+                    if (course_traverser->getCourseName() == "")
+                        course_traverser->setNodeName(inputString);
+
                     course_traverser->addStudent(nameString);
                     course_traverser = nullptr;
                 }
                 else
                 {
-                    course_traverser = course_traverser->getNext();
+                    if(course_traverser->getNext() != nullptr)
+                        course_traverser = course_traverser->getNext();
+                    else
+                    {
+                        course_traverser->addNode(inputString, nameString);    
+                        course_traverser = nullptr;
+                    }
                 }
             }
             myTimer.stop("Insert student: ");
@@ -116,7 +125,8 @@ int main()
 
 course_node::~course_node()
 {
-
+    if (this->next_course != nullptr)
+        delete this->next_course;
 }
 
 course_node::course_node(course_node* nextnode)
@@ -140,6 +150,19 @@ string course_node::getCourseName()
 course_node* course_node::getNext()
 {
     return this->next_course;
+}
+
+void course_node::addNode(string inputString, string nameString)
+{
+    course_node* traverser;
+    this->next_course = new course_node(inputString);
+    traverser = this->next_course;
+    traverser->addStudent(nameString);
+}
+
+void course_node::setNodeName(string inputString)
+{
+    this->course_name = inputString;
 }
 
 void course_node::addStudent(string name)
@@ -172,7 +195,7 @@ void course_node::removeStudent(string name)
 
 void course_node::print()
 {
-    cout << this->course_name << ": ";
+    cout << endl << this->course_name << ": ";
     while (!this->students.empty())
     {
         cout << this->students.top() << " ";
