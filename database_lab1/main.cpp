@@ -20,43 +20,48 @@ public:
     void addStudent(string name);
     void removeStudent(string name);
     void print();
-    myTimer myTimer;
+
 };
 
 int main()
-{
+{   
+    myTimer myTimer;
     char choise = ' ';
     course_node* main_node = nullptr;
     course_node* course_traverser = nullptr;
     string inputString = "";
+    string nameString = "";
 
     while (choise != '0')
     {
-        
-
         string input_name = "";
         menu();
         cin >> choise;
         switch (choise)
         {
         case '1':
+            
             if (main_node == nullptr)
             {
+                cout << "Enter db name: ";
                 cin >> input_name;
+                myTimer.start();
                 main_node = new course_node(input_name);
             }
+            myTimer.stop("Create db: ");
             break;
         case '2':
             cout << "Enter course name: ";
             cin >> inputString;
+            cout << "Enter name: ";
+            cin >> nameString;
+            myTimer.start();
             course_traverser = main_node;
             while (course_traverser != nullptr)
             {
                 if (course_traverser->getCourseName() == inputString)
                 {
-                    cout << "Course found. Enter name: ";
-                    cin >> inputString;
-                    course_traverser->addStudent(inputString);
+                    course_traverser->addStudent(nameString);
                     course_traverser = nullptr;
                 }
                 else
@@ -64,19 +69,20 @@ int main()
                     course_traverser = course_traverser->getNext();
                 }
             }
+            myTimer.stop("Insert student: ");
             break;
         case '3':
             cout << "Enter course name: ";
             cin >> inputString;
+            cout << "Enter name: ";
+            cin >> nameString;
+            myTimer.start();
             course_traverser = main_node;
             while (course_traverser != nullptr)
             {
                 if (course_traverser->getCourseName() == inputString)
                 {
-
-                    cout << "Course found. Enter name: ";
-                    cin >> inputString;
-                    course_traverser->removeStudent(inputString);
+                    course_traverser->removeStudent(nameString);
                     break;
                 }
                 else
@@ -84,13 +90,21 @@ int main()
                     course_traverser = course_traverser->getNext();
                 }
             }
+            myTimer.stop("Remove student: ");
             break;
         case '4':
+            myTimer.start();
             if (main_node != nullptr)
             {
-                main_node->print();
+                course_traverser = main_node;
+                while (course_traverser != nullptr)
+                {
+                    course_traverser->print();
+                    course_traverser = course_traverser->getNext();
+                }
                 cout << endl << endl;
             }
+            myTimer.stop("Print: ");
             break;
         default:
             cout << "Guru meditation." << endl;
@@ -135,8 +149,6 @@ void course_node::addStudent(string name)
 
 void course_node::removeStudent(string name)
 {
-    auto i_start = std::chrono::system_clock::now();
-
     while (!this->students.empty())
     {
         if (this->students.top() == name)
@@ -156,14 +168,10 @@ void course_node::removeStudent(string name)
         this->students.push(this->temp_queue_students.top());
         this->temp_queue_students.pop();
     }
-    auto i_end = std::chrono::system_clock::now();
-    std::chrono::duration<double> elapsed = i_end - i_start;
-    std::cout << "remove : " << elapsed.count() << "s";
 }
 
 void course_node::print()
 {
-    myTimer.start();
     cout << this->course_name << ": ";
     while (!this->students.empty())
     {
@@ -176,12 +184,11 @@ void course_node::print()
         this->students.push(this->temp_queue_students.top());
         this->temp_queue_students.pop();
     }
-    myTimer.stop("Print");
 }
 
 void menu()
 {
-    cout << "1. Build an empty database" << endl;
+    cout << endl << "1. Build an empty database" << endl;
     cout << "2. Insert a course application to the database" << endl;
     cout << "3. Delete a course application from the database." << endl;
     cout << "4. Print the contents of the database in the following form:" << endl;
