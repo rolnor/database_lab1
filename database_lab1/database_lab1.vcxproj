@@ -152,7 +152,7 @@
     <ClInclude Include="myTimer.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\..\..\Desktop\tests.txt" />
+    <Text Include="tests.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
