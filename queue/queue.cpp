@@ -6,7 +6,7 @@ void myQueue::push(string name)
 	students.insert(students.begin(),name);
 }
 
-void myQueue::pop()
+void myQueue::erasefirstInLine()
 {
 	students.erase(students.begin());
 }
@@ -18,7 +18,7 @@ int myQueue::empty()
 	else return 0;
 }
 
-string myQueue::top()
+string myQueue::firstInLine()
 {
 	return students.front();
 }

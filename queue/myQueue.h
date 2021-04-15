@@ -15,7 +15,7 @@ private:
 	vector<string> students;
 public:
 	void push(string name);
-	void pop();
+	void erasefirstInLine();
 	int empty();
-	string top();
+	string firstInLine();
 };

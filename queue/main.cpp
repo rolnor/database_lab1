@@ -173,21 +173,21 @@ void course_node::removeStudent(string name)
 {
     while (!this->students.empty())
     {
-        if (this->students.top() == name)
+        if (this->students.firstInLine() == name)
         {
-            this->students.pop();
+            this->students.erasefirstInLine();
         }
         else
         {
-            this->temp_queue_students.push(this->students.top());
-            this->students.pop();
+            this->temp_queue_students.push(this->students.firstInLine());
+            this->students.erasefirstInLine();
         }
     }
 
     while (!this->temp_queue_students.empty())
     {
-        this->students.push(this->temp_queue_students.top());
-        this->temp_queue_students.pop();
+        this->students.push(this->temp_queue_students.firstInLine());
+        this->temp_queue_students.erasefirstInLine();
     }
 }
 
@@ -196,14 +196,14 @@ void course_node::print()
     cout << endl << this->course_name << ": ";
     while (!this->students.empty())
     {
-        cout << this->students.top() << " ";
-        this->temp_queue_students.push(this->students.top());
-        this->students.pop();
+        cout << this->students.firstInLine() << " ";
+        this->temp_queue_students.push(this->students.firstInLine());
+        this->students.erasefirstInLine();
     }
     while (!this->temp_queue_students.empty())
     {
-        this->students.push(this->temp_queue_students.top());
-        this->temp_queue_students.pop();
+        this->students.push(this->temp_queue_students.firstInLine());
+        this->temp_queue_students.erasefirstInLine();
     }
 }
 
