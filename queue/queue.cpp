@@ -3,7 +3,7 @@
 
 void myQueue::push(string name)
 {
-	students.insert(students.begin(),name);
+	students.insert(students.end(),name);
 }
 
 void myQueue::erasefirstInLine()
