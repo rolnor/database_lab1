@@ -1,4 +1,4 @@
-#include "mystack.h"
+#include "myQueue.h"
 #include "myTimer.h"
 
 void menu();
@@ -9,8 +9,8 @@ class course_node
 private:
     course_node* next_course;
     string course_name;
-    myStack students;
-    myStack temp_queue_students;
+    myQueue students;
+    myQueue temp_queue_students;
 public:
     ~course_node();
     course_node(course_node* nextnode);
@@ -25,7 +25,7 @@ public:
 };
 
 int main()
-{   
+{
     myTimer myTimer;
     char choise = ' ';
     course_node* main_node = nullptr;
@@ -68,11 +68,11 @@ int main()
                 }
                 else
                 {
-                    if(course_traverser->getNext() != nullptr)
+                    if (course_traverser->getNext() != nullptr)
                         course_traverser = course_traverser->getNext();
                     else
                     {
-                        course_traverser->addNode(inputString, nameString);    
+                        course_traverser->addNode(inputString, nameString);
                         course_traverser = nullptr;
                     }
                 }
@@ -176,7 +176,6 @@ void course_node::removeStudent(string name)
         if (this->students.top() == name)
         {
             this->students.pop();
-            break;
         }
         else
         {
@@ -210,7 +209,7 @@ void course_node::print()
 
 void menu()
 {
-    cout << endl << "1. Build an empty database" << endl;
+    cout << endl << "Queue version." << endl << "1. Build an empty database" << endl;
     cout << "2. Insert a course application to the database" << endl;
     cout << "3. Delete a course application from the database." << endl;
     cout << "4. Print the contents of the database in the following form:" << endl;
