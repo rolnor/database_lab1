@@ -114,6 +114,8 @@ int main()
             }
             myTimer.stop("Print: ");
             break;
+        case '0':
+            break;
         default:
             cout << "Guru meditation." << endl;
             break;
