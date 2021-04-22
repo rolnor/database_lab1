@@ -116,9 +116,6 @@ int palindromeCheckerQueue::check(string inputString)
 
 void palindromeCheckerStack::push(string inputString)
 {
-    while (!inputStack.empty())
-        inputStack.pop();
-
     for(char myChar : inputString)
     {
         inputStack.push(myChar);
