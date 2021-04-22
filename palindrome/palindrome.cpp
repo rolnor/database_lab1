@@ -1,6 +1,3 @@
-// palindrome.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include "myTimer.h"
 #include <string>
 #include <stack>
@@ -116,6 +113,9 @@ int palindromeCheckerQueue::check(string inputString)
 
 void palindromeCheckerStack::push(string inputString)
 {
+    while (!inputStack.empty())
+        inputStack.pop();
+
     for(char myChar : inputString)
     {
         inputStack.push(myChar);
