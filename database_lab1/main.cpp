@@ -2,7 +2,7 @@
 #include "myTimer.h"
 
 void menu();
-
+void palindrome();
 
 class course_node
 {
@@ -22,7 +22,10 @@ public:
     void addStudent(string name);
     void removeStudent(string name);
     void print();
+
 };
+
+
 
 int main()
 {   
@@ -113,6 +116,9 @@ int main()
                 cout << endl << endl;
             }
             myTimer.stop("Print: ");
+            break;
+        case '5':
+            palindrome();
             break;
         case '0':
             break;
@@ -209,6 +215,8 @@ void course_node::print()
         this->temp_queue_students.pop();
     }
 }
+
+
 
 void menu()
 {

@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "database_lab1", "database_l
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "queue", "queue\queue.vcxproj", "{B0B46E4E-A9CC-4CB5-848D-09066CD2821C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "palindrome", "palindrome\palindrome.vcxproj", "{EE74334C-11BE-4430-B685-6F30DAF642DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{B0B46E4E-A9CC-4CB5-848D-09066CD2821C}.Release|x64.Build.0 = Release|x64
 		{B0B46E4E-A9CC-4CB5-848D-09066CD2821C}.Release|x86.ActiveCfg = Release|Win32
 		{B0B46E4E-A9CC-4CB5-848D-09066CD2821C}.Release|x86.Build.0 = Release|Win32
+		{EE74334C-11BE-4430-B685-6F30DAF642DB}.Debug|x64.ActiveCfg = Debug|x64
+		{EE74334C-11BE-4430-B685-6F30DAF642DB}.Debug|x64.Build.0 = Debug|x64
+		{EE74334C-11BE-4430-B685-6F30DAF642DB}.Debug|x86.ActiveCfg = Debug|Win32
+		{EE74334C-11BE-4430-B685-6F30DAF642DB}.Debug|x86.Build.0 = Debug|Win32
+		{EE74334C-11BE-4430-B685-6F30DAF642DB}.Release|x64.ActiveCfg = Release|x64
+		{EE74334C-11BE-4430-B685-6F30DAF642DB}.Release|x64.Build.0 = Release|x64
+		{EE74334C-11BE-4430-B685-6F30DAF642DB}.Release|x86.ActiveCfg = Release|Win32
+		{EE74334C-11BE-4430-B685-6F30DAF642DB}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
