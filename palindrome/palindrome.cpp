@@ -47,7 +47,10 @@ int main()
     while (choise != '0')
     {
         cout << endl << "Enter string to check" << endl;
-        cin.ignore();
+        // input fix. check if buffer contains space and ignore.
+        if (isspace(cin.peek())) 
+            cin.ignore();
+
         getline(cin, inputString);
 
         inputString.erase(remove(inputString.begin(), inputString.end(), ' '), inputString.end());
